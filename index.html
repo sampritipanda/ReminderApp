@@ -1,0 +1,167 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ 
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   
+	<title>Set Your Reminder</title>
+   
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/glDatePicker.default.css">
+	   
+	<script type="text/javascript" src="js/browser.js"></script>
+	<script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+   
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	   
+		#clock {
+			position: relative;
+			width: 600px;
+			height: 600px;
+			margin: 20px auto 0 auto;
+			background: url(images/clockface.jpg);
+			list-style: none;
+		}
+	   
+		#sec, #min, #hour {
+			position: absolute;
+			width: 30px;
+			height: 600px;
+			top: 0px;
+			left: 285px;
+		}
+			   
+		#min {
+			background: url(images/minhand.png);
+			z-index: 2;
+		}
+		   
+		#hour {
+			background: url(images/hourhand.png);
+			z-index: 1;
+		}
+			   
+		p {
+			text-align: center;
+			padding: 10px 0 0 0;
+		}
+	</style>
+   
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var time = document.getElementsByName("time")[0];
+
+			var hours = 9;
+			var mins = 0;
+			var hdegree = hours * 30 + (mins / 2);
+			var hrotate = "rotate(" + hdegree + "deg)";
+
+			$("#hour").css({"-moz-transform" : hrotate, "-webkit-transform" : hrotate});
+
+			var mdegree = mins * 6;
+			var mrotate = "rotate(" + mdegree + "deg)";
+
+			$("#min").css({"-moz-transform" : mrotate, "-webkit-transform" : mrotate});
+			 
+			var event_handler;
+			if(BrowserDetect.browser == "Chrome" || BrowserDetect.browser == "Explorer"){                  
+				event_handler = "keydown";
+			}
+			else {
+				event_handler = "keypress";
+			}
+
+			$('html').bind(event_handler, function(e) {
+				var code = (e.keyCode ? e.keyCode : e.which);
+				   
+				switch(code){
+					case 37:
+						mins -= 1;
+						console.log(mins);
+						break;
+					case 38:
+						hours += 1;
+						console.log(hours);
+						break;
+					case 39:
+						mins += 1;
+						console.log(mins);
+						break;
+					case 40:
+						hours -= 1;
+						console.log(hours);
+						break;
+					default:
+						break;
+				}
+				
+				time.value = (hours % 24 % 12) + ":" + (mins % 60);
+
+				var hdegree = hours * 30 + (mins / 2);
+				var hrotate = "rotate(" + hdegree + "deg)";
+
+				$("#hour").css({"-moz-transform" : hrotate, "-webkit-transform" : hrotate});
+
+				var mdegree = mins * 6;
+				var mrotate = "rotate(" + mdegree + "deg)";
+
+				$("#min").css({"-moz-transform" : mrotate, "-webkit-transform" : mrotate});      
+			});
+		});  
+	</script>
+</head>
+ 
+<body>
+ 
+		<center><legend><h3>Set your Reminder</h3></legend></center>
+	   
+		<form action="reminder.php" id="reminder_form" method="post"></form>
+	   
+		<ul id="clock">
+			<li id="sec"></li>
+			<li id="hour"></li>
+			<li id="min"></li>
+		</ul>
+	   
+		<input type="hidden" name="time" value="" form="reminder_form" />
+	   
+		<div id="day" align="right">
+			<input type="radio" name="type" value="am" form="reminder_form">&nbsp;&nbsp;&nbsp;<img src="images/day.jpg" class="img-circle" />
+		</div>
+			   
+		<div id="night" align="right">
+			<input type="radio" name="type" value="am" form="reminder_form">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/night.jpg" class="img-circle" />
+		</div>
+	   
+		<style>
+			img {
+				width: 100px;
+				height: 100px;
+			}
+		   
+			#day {
+				position:absolute;
+				top:35%;
+				left:72%;
+			}
+		   
+			#night {
+				position:absolute;
+				top:55%;
+				left:72%;
+			}   
+		</style>
+	   
+		<center><textarea name="reminder" form="reminder_form" style="width:500px;height:200px;" placeholder="What do you want me to remind you to do?"></textarea></center>
+		
+		<center><input name="number" form="reminder_form" type="tel" placeholder="and Your Mobile Number!"></input></center>
+	   
+		<center><input type="Submit" value="Remind Me!" class="btn btn-large btn-success" form="reminder_form" style="margin:10px;position:absolute;left:44.5%;top:65%;z-index:3;" /></center>
+	   
+</body>
+	   
+</html>
